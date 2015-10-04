@@ -1,0 +1,13 @@
+# Managed by Composer
+/vendor/
+/assets/bower/
+
+# Composer PHAR
+/composer.phar
+
+# Mac
+.DS_Store
+
+# Project
+*.sublime-*
+.idea/

@@ -1,0 +1,31 @@
+{
+    "name": "v03adk/jet-api-client",
+    "description": "Api Client for Jet.com",
+    "license": "MIT",
+    "type": "library",
+
+    "require": {
+        "php": ">=5.3",
+        "guzzlehttp/guzzle": "^6.0"
+    },
+
+    "require-dev": {
+        "ext-curl": "*"
+    },
+
+    "keywords": [ "api client for jet.com" ],
+
+    "authors": [
+        {
+            "name": "Denis Alimov",
+            "email": "v03adk@gmail.com",
+            "role": "Development"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {
+            "Jet\\ApiClient\\": "src/"
+        }
+    }
+}
