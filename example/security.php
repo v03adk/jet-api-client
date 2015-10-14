@@ -3,9 +3,12 @@
 include_once __dir__ . '/../vendor/autoload.php';
 use Jet\ApiClient\SecurityClient;
 
-$url = "https://merchant-api.jet.com/api";
-// you can take $url from config file in your application for example
-$client = new SecurityClient("user", "user", $url);
+$config['jet_api_endpoint'] = "https://merchant-api.jet.com/api";
+$config['jet_user'] = "user";
+$config['jet_password'] = "password";
+$config['jet_output'] = "array";
+
+$client = new SecurityClient($config);
 
 $token = $client->token();
 

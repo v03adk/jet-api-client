@@ -8,13 +8,15 @@ class SecurityClient
 {
     private $user;
     private $password;
+    private $output;
     private $url;
 
-    public function __construct($user, $password, $url)
+    public function __construct($config)
     {
-        $this->user = $user;
-        $this->password = $password;
-        $this->url = $url;
+        $this->user = $config['jet_user'];
+        $this->password = $config['jet_password'];
+        $this->output = $config['jet_output'];
+        $this->url = $config['jet_api_endpoint'];
     }
 
     /**
@@ -35,17 +37,18 @@ class SecurityClient
 
     public function token()
     {
-        $guzzleclient = new GuzzleClient();
-
         if(empty($this->user) || empty($this->password) || empty($this->url))
             throw new \Exception("Provide information to get token", 500);
 
-        $res = $guzzleclient->post($this->url.'/token/', ['headers' => ['content-type' => 'application/json'],
+        $client = new GuzzleClient();
+
+        $res = $client->post($this->url.'/token', ['headers' => ['content-type' => 'application/json'],
             'body' => json_encode(['user' => $this->user, 'pass' => $this->password])]);
 
-        if ($res->getStatusCode() == 200)
-        {
-            return json_decode($res->getBody(), true);
+        if ($res->getStatusCode() == 200) {
+            if ($this->output == 'array')
+                return json_decode($res->getBody(), true);
+            return $res->getBody();
         }
     }
 }

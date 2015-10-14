@@ -2,20 +2,8 @@
 
 namespace Jet\ApiClient;
 
-use GuzzleHttp\Client as GuzzleClient;
-
-class TaxonomyClient
+class TaxonomyClient extends BaseClient
 {
-    private $url;
-    private $idToken;
-
-    public function __construct($url, $idToken)
-    {
-        $this->url = $url;
-        $this->idToken = $idToken;
-    }
-
-
     /**
      * receive json like
      * {
@@ -30,17 +18,12 @@ class TaxonomyClient
     // max limit is 1000
     public function links($version, $offset, $limit = 1000)
     {
-        $guzzleclient = new GuzzleClient();
-        $url = $this->url . "/taxonomy/links/{$version}?offset={$offset}&limit={$limit}";
+        $url = "/taxonomy/links/{$version}?offset={$offset}&limit={$limit}";
 
-        $res = $guzzleclient->get($url, ['headers' => ['content-type' => 'application/json',
+        $res = $this->transport->get($url, ['headers' => ['content-type' => 'application/json',
             'Authorization: Bearer '.$this->idToken]]);
 
-
-
-        if ($res->getStatusCode() == 200) {
-            return json_decode($res->getBody(), true)['node_urls'];
-        }
+        $this->processResult($res);
     }
 
 
@@ -63,15 +46,10 @@ class TaxonomyClient
 
     public function nodes($link)
     {
-        $guzzleclient = new GuzzleClient();
-        $url = $this->url . $link;
-
-        $res = $guzzleclient->get($url, ['headers' => ['content-type' => 'application/json',
+        $res = $this->transport->get($link, ['headers' => ['content-type' => 'application/json',
             'Authorization: Bearer '.$this->idToken]]);
 
-        if ($res->getStatusCode() == 200) {
-            return json_decode($res->getBody(), true);
-        }
+        $this->processResult($res);
     }
 
 
@@ -120,14 +98,9 @@ class TaxonomyClient
 
     public function nodesAttributes($link)
     {
-        $guzzleclient = new GuzzleClient();
-        $url = $this->url . $link . '/attributes';
-
-        $res = $guzzleclient->get($url, ['headers' => ['content-type' => 'application/json',
+        $res = $this->transport->get($link.'/attributes', ['headers' => ['content-type' => 'application/json',
             'Authorization: Bearer '.$this->idToken]]);
 
-        if ($res->getStatusCode() == 200) {
-            return json_decode($res->getBody(), true)['attributes'];
-        }
+        $this->processResult($res);
     }
 }
